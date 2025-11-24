@@ -1,0 +1,61 @@
+{% extends 'core/base.html' %}
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="card shadow-sm mt-4 p-3">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2 class="text-primary">Student Management</h2>
+            <div>
+                <a href="{% url 'add_student' %}" class="btn btn-success me-2">Add Student</a>
+                <a href="{% url 'logout' %}" class="btn btn-danger">Logout</a>
+            </div>
+        </div>
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-success">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+
+        <div class="table-responsive">
+            <table class="table table-hover table-striped align-middle text-center">
+                <thead class="table-primary">
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Contact</th>
+                        <th>Birthdate</th>
+                        <th>Course</th>
+                        <th>Total Fees</th>
+                        <th>Fees Paid</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for student in students %}
+                    <tr>
+                        <td>{{ student.id }}</td>
+                        <td>{{ student.studentName }}</td>
+                        <td>{{ student.contactNumber|default:"-" }}</td>
+                        <td>{{ student.birthdate|date:"d-M-Y"|default:"-" }}</td>
+                        <td>{{ student.course|default:"-" }}</td>
+                        <td>{{ student.totalfees|default:"0.00" }}</td>
+                        <td>{{ student.feesPaid|default:"0.00" }}</td>
+                        <td>
+                            <a href="{% url 'edit_student' student.id %}" class="btn btn-warning btn-sm">Edit</a>
+                            <a href="{% url 'delete_student' student.id %}" class="btn btn-danger btn-sm"
+                               onclick="return confirm('Are you sure you want to delete this student?')">Delete</a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="8" class="text-center">No students found.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
