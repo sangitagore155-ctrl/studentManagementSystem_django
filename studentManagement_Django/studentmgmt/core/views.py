@@ -43,9 +43,6 @@ def register_view(request):
     return render(request, "core/register.html")
 
 
-def home_view(request):
-    return render(request, "core/home.html")
-
 # Logout
 def logout_view(request):
     logout(request)
@@ -114,4 +111,5 @@ def delete_student(request, id):
     student = get_object_or_404(Student, pk=id)
     student.delete()
     messages.success(request, "Student deleted successfully!")
+
     return redirect('home')
